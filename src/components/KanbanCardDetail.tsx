@@ -6,7 +6,6 @@ import {
   DialogTitle,
   DialogFooter
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { UserProductionItem } from '@/hooks/useKanbanData';
 import ReadOnlyCardView from './kanban-detail/ReadOnlyCardView';
 import EditCardForm from './kanban-detail/EditCardForm';
@@ -94,14 +93,6 @@ const KanbanCardDetail: React.FC<KanbanCardDetailProps> = ({
             />
           )}
         </div>
-
-        {editedItem.status === 'review' && editedItem.news_url && (
-          <div className="mt-4">
-            <a href={editedItem.news_url} target="_blank" rel="noopener noreferrer">
-              <Button variant="outline">View Original News</Button>
-            </a>
-          </div>
-        )}
 
         <DialogFooter className="mt-6 flex justify-between">
           <CardDetailActions 
