@@ -72,7 +72,7 @@ const KanbanCard: React.FC<KanbanCardProps> = ({
   return (
     <div
       className={cn(
-        "kanban-card bg-white rounded-lg shadow-sm border border-kanban-borderGray p-4 mb-3 cursor-pointer animate-fade-in",
+        "kanban-card bg-white rounded-lg shadow-sm border border-kanban-borderGray p-4 mb-3 cursor-pointer animate-fade-in relative",
         isReviewCard && "hover:border-blue-400 hover:shadow-md transition-all duration-200",
         className
       )}
@@ -82,6 +82,17 @@ const KanbanCard: React.FC<KanbanCardProps> = ({
       onClick={handleClick}
       data-id={id}
     >
+      {status === 'published' && itemData?.wordpress_post_link && (
+        <a
+          href={itemData.wordpress_post_link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-kanban-blue hover:text-kanban-purple transition-colors absolute top-2 right-2"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <ExternalLink size={16} />
+        </a>
+      )}
       {image && (
         <div className="w-full h-32 overflow-hidden rounded-md mb-3">
           <img
