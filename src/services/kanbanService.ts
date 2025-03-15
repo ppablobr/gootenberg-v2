@@ -190,30 +190,3 @@ export const deleteUserProductionItem = async (itemId: string) => {
     return false;
   }
 };
-
-// Send data to WordPress webhook
-export const sendToWordPressWebhook = async (item: UserProductionItem) => {
-  try {
-    const webhookUrl = 'https://n8n.gupi.com.br/webhook-test/d487a5e5-4102-4c95-bd2c-7c5594de899c';
-    const response = await fetch(webhookUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(item),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Webhook responded with status: ${response.status}`);
-    }
-
-    console.log('Successfully sent to WordPress webhook:', item);
-    toast.success('Item sent to WordPress');
-
-    return true;
-  } catch (error) {
-    console.error('Error sending to WordPress webhook:', error);
-    toast.error('Failed to send to WordPress');
-    return false;
-  }
-};

@@ -10,6 +10,7 @@ import { UserProductionItem } from '@/hooks/useKanbanData';
 import ReadOnlyCardView from './kanban-detail/ReadOnlyCardView';
 import EditCardForm from './kanban-detail/EditCardForm';
 import CardDetailActions from './kanban-detail/CardDetailActions';
+import { ExternalLink } from 'lucide-react';
 
 interface KanbanCardDetailProps {
   isOpen: boolean;
@@ -93,6 +94,19 @@ const KanbanCardDetail: React.FC<KanbanCardDetailProps> = ({
             />
           )}
         </div>
+
+        {editedItem.news_url && (
+          <div className="mt-4">
+            <a 
+              href={editedItem.news_url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-kanban-blue hover:text-kanban-purple transition-colors flex items-center gap-1"
+            >
+              View Original News <ExternalLink size={16} />
+            </a>
+          </div>
+        )}
 
         <DialogFooter className="mt-6 flex justify-between">
           <CardDetailActions 

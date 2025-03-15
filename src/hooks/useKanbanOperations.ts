@@ -5,8 +5,7 @@ import {
   createUserProductionEntry, 
   updateItemStatus, 
   fetchUpdatedUserItems,
-  deleteUserProductionItem,
-  sendToWordPressWebhook
+  deleteUserProductionItem
 } from '@/services/kanbanService';
 import { toast } from 'sonner';
 import { User } from '@supabase/supabase-js';
@@ -49,15 +48,6 @@ export const useKanbanOperations = (
         // If the item is being moved to 'rewrite', send it to the webhook
         if (newStatus === 'rewrite') {
           await sendToWebhook(item as UserProductionItem);
-        }
-
-        if (newStatus === 'send' && 'isUserItem' in item && item.isUserItem) {
-          // Send to WordPress webhook
-          const sent = await sendToWordPressWebhook(item as UserProductionItem);
-
-          if (!sent) {
-            throw new Error('Failed to send to WordPress webhook');
-          }
         }
       } else {
         // It's a google_news item
