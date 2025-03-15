@@ -60,8 +60,9 @@ export const useKanbanData = (user: User | null) => {
         if (user) {
           const { data: userProductionData, error: userProductionError } = await supabase
             .from('user_production')
-            .select('id, news_title, image_url, news_url, news_source, created_at, status, google_news_id')
-            .eq('user_id', user.id);
+            .select('id, news_title, image_url, news_url, news_source, created_at, status, google_news_id, updated_at')
+            .eq('user_id', user.id)
+            .order('updated_at', { ascending: false }); // Order by updated_at, newest first
 
           if (userProductionError) {
             throw userProductionError;
@@ -80,7 +81,8 @@ export const useKanbanData = (user: User | null) => {
               published_at: item.created_at,
               status: item.status || 'rewrite',
               isUserItem: true,
-              google_news_id: item.google_news_id
+              google_news_id: item.google_news_id,
+              updated_at: item.updated_at
             }));
             
             setUserItems(processedUserData);
