@@ -52,13 +52,20 @@ export const useKanbanOperations = (
               
               // Remove the item from newsItems
               setNewsItems(prevItems => prevItems.filter(i => i.id !== item.id));
+              
+              // Send the card data to the webhook
+              const itemToSend = userItems.find(i => i.id === newUserItem.id);
+              
+              if (itemToSend) {
+                await sendToWebhook(itemToSend, 'https://n8n.gupi.com.br/webhook-test/86a4dae8-1fab-45c8-a32d-79d4ea6ba744');
+              }
             }
-          } else if (newStatus === 'send' && isUserItem) {
+          } else if (newStatus === 'send' && item.status === 'review' && isUserItem) {
             // Send the card data to the webhook
             const itemToSend = userItems.find(i => i.id === item.id);
             
             if (itemToSend) {
-              await sendToWebhook(itemToSend);
+              await sendToWebhook(itemToSend, 'https://n8n.gupi.com.br/webhook-test/d487a5e5-4102-4c95-bd2c-7c5594de899c');
             }
           }
         } else {

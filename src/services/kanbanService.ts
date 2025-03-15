@@ -4,7 +4,7 @@ import { User } from '@supabase/supabase-js';
 import { KanbanItem, UserProductionItem } from '@/hooks/useKanbanData';
 
 // Send card data to webhook
-export const sendToWebhook = async (item: UserProductionItem) => {
+export const sendToWebhook = async (item: UserProductionItem, webhookUrl: string) => {
   try {
     // Fetch the complete user_production item data
     const { data: userProductionItem, error } = await supabase
@@ -22,7 +22,6 @@ export const sendToWebhook = async (item: UserProductionItem) => {
     }
     
     // Send the data to the webhook
-    const webhookUrl = 'https://n8n.gupi.com.br/webhook-test/d487a5e5-4102-4c95-bd2c-7c5594de899c';
     const response = await fetch(webhookUrl, {
       method: 'POST',
       headers: {
