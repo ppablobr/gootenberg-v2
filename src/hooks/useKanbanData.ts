@@ -61,8 +61,7 @@ export const useKanbanData = (user: User | null) => {
           const { data: userProductionData, error: userProductionError } = await supabase
             .from('user_production')
             .select('id, news_title, image_url, news_url, news_source, created_at, status, google_news_id, updated_at')
-            .eq('user_id', user.id)
-            .order('updated_at', { ascending: false }); // Order by updated_at, newest first
+            .eq('user_id', user.id);
 
           if (userProductionError) {
             throw userProductionError;
@@ -72,7 +71,7 @@ export const useKanbanData = (user: User | null) => {
             console.log('Fetched user production data:', userProductionData);
             
             // Map user production items to KanbanItem format
-            const processedUserData = userProductionData.map(item => ({
+            let processedUserData = userProductionData.map(item => ({
               id: item.id,
               title: item.news_title,
               image_url: item.image_url,
@@ -84,6 +83,14 @@ export const useKanbanData = (user: User | null) => {
               google_news_id: item.google_news_id,
               updated_at: item.updated_at
             }));
+
+            // Sort the 'published' items by updated_at in descending order
+            processedUserData = processedUserData.sort((a, b) => {
+              if (a.status === 'published' && b.status === 'published') {
+                return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+              }
+              return 0; // Keep original order if not both 'published'
+            });
             
             setUserItems(processedUserData);
           }
