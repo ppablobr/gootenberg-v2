@@ -96,6 +96,26 @@ export const useKanbanData = (user: User | null) => {
     };
 
     fetchAllItems();
+
+    // Set up Supabase subscription for real-time updates
+    if (user) {
+      const channel = supabase
+        .channel(`public:user_production:user_id:${user.id}`)
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'user_production', filter: `user_id=eq.${user.id}` },
+          (payload) => {
+            console.log('Change received!', payload);
+            fetchAllItems(); // Re-fetch all items to update the state
+          }
+        )
+        .subscribe();
+
+      // Unsubscribe from the channel when the component unmounts
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
   }, [user]);
 
   return {

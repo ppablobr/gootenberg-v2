@@ -22,7 +22,7 @@ export const sendToWebhook = async (item: UserProductionItem) => {
     }
     
     // Send the data to the webhook
-    const webhookUrl = 'https://n8n.gupi.com.br/webhook-test/86a4dae8-1fab-45c8-a32d-79d4ea6ba744';
+    const webhookUrl = 'https://n8n.gupi.com.br/webhook-test/d487a5e5-4102-4c95-bd2c-7c5594de899c';
     const response = await fetch(webhookUrl, {
       method: 'POST',
       headers: {
